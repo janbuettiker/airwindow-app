@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">airwindow-app</string>
+
+    <string-array name="window_names">
+        <item>Window Bedroom South</item>
+        <item>Window Bathroom North</item>
+        <item>Roofwindow Bathroom</item>
+    </string-array>
+    <string-array name="window_descriptions">
+        <item>only open in the mornings</item>
+        <item>don\'t keep open too often</item>
+        <item>hope a bird doesn\'t defecate</item>
+    </string-array>
 </resources>
