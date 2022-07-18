@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.airwindow_app.activities.HomeActivity;
 import com.example.airwindow_app.activities.WindowOverviewActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openWindowOverview(View view) {
         Intent intent = new Intent(this, WindowOverviewActivity.class);
+        startActivity(intent);
+    }
+
+    public void openHomeActivity(View view) {
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
 }

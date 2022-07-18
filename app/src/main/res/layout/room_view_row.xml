@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/windowRowLayout"
+    android:id="@+id/roomRowLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -19,33 +19,34 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/ivWindowOverviewIcon"
+                android:id="@+id/ivRoomRowIcon"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/window_closed" />
+                app:srcCompat="@drawable/living_room" />
 
             <TextView
-                android:id="@+id/tvWindowOverviewName"
-                android:layout_width="300dp"
-                android:layout_height="34dp"
-                android:layout_marginStart="4dp"
+                android:id="@+id/tvRoomRowName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="Name"
+                android:text="Room Name"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/ivWindowOverviewIcon"
+                app:layout_constraintStart_toEndOf="@+id/ivRoomRowIcon"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvWindowOverviewDescription"
-                android:layout_width="300dp"
-                android:layout_height="19dp"
-                android:text="Description"
-                app:layout_constraintStart_toStartOf="@+id/tvWindowOverviewName"
-                app:layout_constraintTop_toBottomOf="@+id/tvWindowOverviewName" />
+                android:id="@+id/tvRoomRowDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Room Description"
+                app:layout_constraintStart_toStartOf="@+id/tvRoomRowName"
+                app:layout_constraintTop_toBottomOf="@+id/tvRoomRowName" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

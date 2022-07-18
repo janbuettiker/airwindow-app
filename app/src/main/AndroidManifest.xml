@@ -14,6 +14,14 @@
         android:theme="@style/Theme.Airwindowapp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.WindowActivity"
+            android:exported="false"
+            android:label="WindowActivity"
+            android:parentActivityName=".activities.WindowOverviewActivity" />
+        <activity
             android:name=".activities.WindowOverviewActivity"
             android:exported="false" />
         <activity
