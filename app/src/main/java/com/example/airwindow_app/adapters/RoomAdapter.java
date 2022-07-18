@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.airwindow_app.R;
+import com.example.airwindow_app.activities.RoomActivity;
 import com.example.airwindow_app.activities.WindowOverviewActivity;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
@@ -45,7 +46,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         holder.iconIV.setImageResource(imageData[position]);
 
         holder.roomRowLayout.setOnClickListener(view -> {
-            Intent intent = new Intent(context, WindowOverviewActivity.class);
+            Intent intent = new Intent(context, RoomActivity.class);
             intent.putExtra("roomNameData", nameData[position]);
             intent.putExtra("roomDescriptionData", descriptionData[position]);
             intent.putExtra("roomImageData", imageData[position]);

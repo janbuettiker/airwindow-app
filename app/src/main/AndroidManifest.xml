@@ -15,11 +15,18 @@
         tools:targetApi="31">
         <activity
             android:name=".activities.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Home Overview"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.RoomActivity"
+            android:exported="false"
+            android:label="Room Overview"
+            android:parentActivityName=".activities.RoomActivity" />
         <activity
             android:name=".activities.WindowActivity"
             android:exported="false"
-            android:label="WindowActivity"
+            android:label="Window Settings"
             android:parentActivityName=".activities.WindowOverviewActivity" />
         <activity
             android:name=".activities.WindowOverviewActivity"

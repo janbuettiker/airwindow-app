@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="25dp"
+    android:layout_margin="15dp"
     tools:context=".activities.WindowActivity">
 
     <ImageView
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tvWindowName"
-        android:layout_width="175dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
@@ -29,52 +29,105 @@
 
     <TextView
         android:id="@+id/tvWindowDescription"
-        android:layout_width="175dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Description"
         app:layout_constraintStart_toStartOf="@+id/tvWindowName"
         app:layout_constraintTop_toBottomOf="@+id/tvWindowName" />
 
-    <Switch
-        android:id="@+id/swWindowOpen"
-        android:layout_width="304dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="24dp"
-        android:minHeight="48dp"
-        android:text="Öffnen / Schliessen"
-        app:layout_constraintStart_toStartOf="parent"
+    <TextView
+        android:id="@+id/tvWindowOpenNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Öffnen / Schliessen zu Zeitpunkt"
+        app:layout_constraintStart_toStartOf="@+id/tvWindowOpenLater"
+        app:layout_constraintTop_toBottomOf="@+id/tvWindowOpenLater" />
+
+    <ToggleButton
+        android:id="@+id/tbWindowOpenNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="ToggleButton"
+        android:textOff="Geschlossen"
+        android:textOn="Offen"
+        app:layout_constraintEnd_toEndOf="@+id/tvWindowDescription"
         app:layout_constraintTop_toBottomOf="@+id/ivWindowIcon" />
 
     <TextView
         android:id="@+id/tvWindowOpenLater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Öffnen / Schliessen zu Zeitpunkt"
-        app:layout_constraintStart_toStartOf="@+id/swWindowOpen"
-        app:layout_constraintTop_toBottomOf="@+id/swWindowOpen" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Öffnen / Schliessen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tbWindowOpenNow" />
 
     <Button
         android:id="@+id/btWindowTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:onClick="populateTimePicker"
         android:text="Zeit"
-        app:layout_constraintStart_toEndOf="@+id/tvWindowOpenLater"
-        app:layout_constraintTop_toBottomOf="@+id/swWindowOpen" />
+        app:layout_constraintEnd_toEndOf="@+id/tbWindowOpenNow"
+        app:layout_constraintTop_toBottomOf="@+id/tbWindowOpenNow" />
+
+    <TextView
+        android:id="@+id/tvWindowAutoMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Automatisches Schliessen"
+        app:layout_constraintStart_toStartOf="@+id/tvWindowOpenNow"
+        app:layout_constraintTop_toBottomOf="@+id/tvWindowOpenNow" />
+
+    <ToggleButton
+        android:id="@+id/tbWindowAutoMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="16dp"
+        android:text="ToggleButton"
+        android:textOff="Aus"
+        android:textOn="An"
+        app:layout_constraintEnd_toEndOf="@+id/btWindowTimePicker"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tvWindowAutoMode"
+        app:layout_constraintTop_toBottomOf="@+id/btWindowTimePicker" />
 
     <Button
         android:id="@+id/btWindowEdit"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="4dp"
         android:onClick="editWindowDialog"
         android:text="Edit"
-        app:layout_constraintStart_toStartOf="@+id/tvWindowDescription"
-        app:layout_constraintTop_toBottomOf="@+id/tvWindowDescription" />
+        app:layout_constraintEnd_toEndOf="@+id/tbWindowAutoMode"
+        app:layout_constraintTop_toBottomOf="@+id/tbWindowAutoMode" />
+
+    <Button
+        android:id="@+id/btWindowDelete"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="editWindowDialog"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="@+id/btWindowSync"
+        app:layout_constraintTop_toBottomOf="@+id/btWindowSync" />
+
+    <Button
+        android:id="@+id/btWindowSync"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="editWindowDialog"
+        android:text="Sync"
+        app:layout_constraintEnd_toEndOf="@+id/btWindowEdit"
+        app:layout_constraintTop_toBottomOf="@+id/btWindowEdit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
