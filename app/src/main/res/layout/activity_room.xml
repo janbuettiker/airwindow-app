@@ -11,7 +11,7 @@
         android:id="@+id/ivRoomIcon"
         android:layout_width="140dp"
         android:layout_height="130dp"
-        android:src="@drawable/bed_room"
+        android:src="@drawable/room_bed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -11,7 +11,7 @@
         android:id="@+id/ivHomeIcon"
         android:layout_width="140dp"
         android:layout_height="130dp"
-        android:src="@drawable/home"
+        android:src="@drawable/house_with_garden"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

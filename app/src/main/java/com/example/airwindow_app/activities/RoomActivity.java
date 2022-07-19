@@ -1,10 +1,12 @@
 package com.example.airwindow_app.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +26,7 @@ public class RoomActivity extends AppCompatActivity {
 
 
     String windowNames[], windowDescriptions[];
-    int windowImages[] = {R.drawable.window_closed, R.drawable.window_opened};
+    int windowImages[] = {R.drawable.window};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class RoomActivity extends AppCompatActivity {
 
             nameData = getIntent().getStringExtra("roomNameData");
             descriptionData = getIntent().getStringExtra("roomDescriptionData");
-            imageData = getIntent().getIntExtra("roomImageData", R.drawable.bed_room);
+            imageData = getIntent().getIntExtra("roomImageData", R.drawable.room_bed);
         } else {
             Toast.makeText(this, "Data is missing", Toast.LENGTH_SHORT).show();
         }

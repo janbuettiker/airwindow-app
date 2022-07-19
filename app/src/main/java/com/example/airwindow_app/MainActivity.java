@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.airwindow_app.activities.HomeActivity;
-import com.example.airwindow_app.activities.WindowOverviewActivity;
+import com.example.airwindow_app.activities.RoomActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void openWindowOverview(View view) {
-        Intent intent = new Intent(this, WindowOverviewActivity.class);
+    public void openRoomOverview(View view) {
+        Intent intent = new Intent(this, RoomActivity.class);
         startActivity(intent);
     }
 

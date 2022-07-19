@@ -13,7 +13,7 @@
         android:layout_height="130dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/window_opened" />
+        app:srcCompat="@drawable/window" />
 
     <TextView
         android:id="@+id/tvWindowName"

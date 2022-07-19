@@ -14,7 +14,7 @@ public class HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
     String roomNames[], roomDescriptions[];
-    int roomImages[] = {R.drawable.dining_room, R.drawable.bed_room, R.drawable.office_room};
+    int roomImages[] = {R.drawable.room_living, R.drawable.room_bath, R.drawable.room_office};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
