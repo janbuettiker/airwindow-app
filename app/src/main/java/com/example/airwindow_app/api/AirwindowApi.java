@@ -10,6 +10,12 @@ import retrofit2.http.GET;
 public interface AirwindowApi {
 
     String BASE_URL = "https://airwindow-api.jblabs.ch/";
+    /*
+        So.. we cannot use the BASE_URL custom domain because I do not have
+        a properly signed SSL certificate. OpenSSL didn't do the trick.
+        So yes, to get access to our API with android, we need to use the backend url BASE_URL_BACKEND.
+     */
+    String BASE_URL_BACKEND = "https://airwindow-api-jdk.prouddune-5091e507.westeurope.azurecontainerapps.io/";
     String BASE_URL_DEV = "http://localhost:8080/";
 
     @GET("rooms/1/windows")

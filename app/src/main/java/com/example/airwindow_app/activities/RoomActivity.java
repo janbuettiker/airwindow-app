@@ -49,7 +49,7 @@ public class RoomActivity extends AppCompatActivity {
         getRoomDataFromIntent();
         setRoomData();
 
-        //getWindowData();
+        getWindowData();
         getWindowCurrentState();
 
         recyclerView = findViewById(R.id.rvRoomWindowList);
@@ -97,11 +97,13 @@ public class RoomActivity extends AppCompatActivity {
 
                     Log.i("windowName", windowList.get(i).getName());
                     Log.i("windowDescription", windowList.get(i).getDescription());
+                    Log.i("windowCurrentState", windowList.get(i).getCurrentState());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Window>> call, Throwable t) {
+                Log.i("onFailure getWindowData", t.getMessage());
                 Toast.makeText(getApplicationContext(), "Could not GET data from API", Toast.LENGTH_SHORT).show();
             }
         });
@@ -118,6 +120,7 @@ public class RoomActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Log.i("onFailure getWindowCurrentState", t.getMessage());
                 Toast.makeText(getApplicationContext(), "Could not GET data from API", Toast.LENGTH_SHORT).show();
 
             }
@@ -127,7 +130,7 @@ public class RoomActivity extends AppCompatActivity {
     public static AirwindowApi getApiClient() {
 
         return new Retrofit.Builder()
-                .baseUrl(AirwindowApi.BASE_URL)
+                .baseUrl(AirwindowApi.BASE_URL_BACKEND)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AirwindowApi.class);
