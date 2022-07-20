@@ -12,17 +12,15 @@ import android.widget.Toast;
 
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.WindowAdapter;
-import com.example.airwindow_app.api.AirwindowApi;
 import com.example.airwindow_app.api.ApiClient;
 import com.example.airwindow_app.models.Window;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RoomActivity extends AppCompatActivity {
 
@@ -34,8 +32,8 @@ public class RoomActivity extends AppCompatActivity {
     String nameData, descriptionData;
     int imageData;
 
-
-    String windowNames[], windowDescriptions[];
+    ArrayList<String> windowNames;
+    ArrayList<String> windowDescriptions;
     int windowImages[] = {R.drawable.window};
 
     @Override
@@ -52,18 +50,12 @@ public class RoomActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rvRoomWindowList);
 
-        getWindowData();
-        Log.i("Debug", windowNames[1]);
+        windowNames = new ArrayList<>();
+        windowDescriptions = new ArrayList<>();
+        setWindowData();
 
-
-        windowNames = getResources().getStringArray(R.array.window_names);
-        windowDescriptions = getResources().getStringArray(R.array.window_descriptions);
-
-
-        WindowAdapter windowAdapter = new WindowAdapter(this, windowNames, windowDescriptions, windowImages);
-        recyclerView.setAdapter(windowAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 
     private void getRoomDataFromIntent() {
         if(getIntent().hasExtra("roomNameData") && getIntent().hasExtra("roomDescriptionData") && getIntent().hasExtra("roomImageData")) {
@@ -82,7 +74,7 @@ public class RoomActivity extends AppCompatActivity {
         roomIconIV.setImageResource(imageData);
     }
 
-    private void getWindowData() {
+    private void setWindowData() {
         Log.i("getWindowData", "Function triggered");
         Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows();
 
@@ -92,14 +84,15 @@ public class RoomActivity extends AppCompatActivity {
                 Log.i("onResponse", "Code: " + response.code());
 
                 List<Window> windowList = response.body();
+                Log.i("windowList", "Size: " + windowList.size());
 
                 for (int i = 0; i < windowList.size(); i++) {
-                    windowNames[i] = windowList.get(i).getName();
-                    windowDescriptions[i] = windowList.get(i).getDescription();
+                    windowNames.add(windowList.get(i).getName());
+                    windowDescriptions.add(windowList.get(i).getDescription());
 
-                    Log.i("windowName", windowList.get(i).getName());
-                    Log.i("windowDescription", windowList.get(i).getDescription());
-                    Log.i("windowCurrentState", windowList.get(i).getCurrentState());
+                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), windowNames, windowDescriptions, windowImages);
+                    recyclerView.setAdapter(windowAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 }
             }
 

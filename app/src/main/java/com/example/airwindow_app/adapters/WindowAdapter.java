@@ -2,6 +2,7 @@ package com.example.airwindow_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +16,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.activities.WindowActivity;
 
+import java.util.ArrayList;
+
 public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowViewHolder> {
 
-    String nameData[], descriptionData[];
+    ArrayList<String> nameData;
+    ArrayList<String> descriptionData;
     int imageData[];
     Context context;
 
-    public WindowAdapter(Context ct, String names[], String descriptions[], int images[]) {
+    public WindowAdapter(Context ct, ArrayList<String> names, ArrayList<String> descriptions, int images[]) {
         context = ct;
         nameData = names;
         descriptionData = descriptions;
         imageData = images;
+
     }
 
     @NonNull
@@ -40,22 +45,26 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
     public void onBindViewHolder(@NonNull WindowViewHolder holder, final int position) {
         // TODO Demo data, to be replaced
         // Sets the view items to positional values in the data arrays
-        holder.nameTV.setText(nameData[position]);
-        holder.descriptionTV.setText(descriptionData[position]);
+        holder.nameTV.setText(nameData.get(position));
+        holder.descriptionTV.setText(descriptionData.get(position));
         holder.iconIV.setImageResource(imageData[0]);
 
         holder.windowRowLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, WindowActivity.class);
             // Send data to Window Activity, omit imagedata as we do not care for the moment
-            intent.putExtra("nameData", nameData[position]);
-            intent.putExtra("descriptionData", descriptionData[position]);
+            Log.i("OnclickListener", nameData.get(position));
+            intent.putExtra("nameData", nameData.get(position));
+            intent.putExtra("descriptionData", descriptionData.get(position));
+            // Needed because we create the recyclerview outside of onCreate()
+            // Thus, the Adapter is not properly attached
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return nameData.length;
+        return nameData.size();
     }
 
     public class WindowViewHolder extends RecyclerView.ViewHolder {
