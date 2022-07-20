@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.WindowAdapter;
 import com.example.airwindow_app.api.AirwindowApi;
+import com.example.airwindow_app.api.ApiClient;
 import com.example.airwindow_app.models.Window;
 
 import java.util.List;
@@ -49,10 +50,11 @@ public class RoomActivity extends AppCompatActivity {
         getRoomDataFromIntent();
         setRoomData();
 
-        getWindowData();
-        getWindowCurrentState();
-
         recyclerView = findViewById(R.id.rvRoomWindowList);
+
+        getWindowData();
+        Log.i("Debug", windowNames[1]);
+
 
         windowNames = getResources().getStringArray(R.array.window_names);
         windowDescriptions = getResources().getStringArray(R.array.window_descriptions);
@@ -82,7 +84,7 @@ public class RoomActivity extends AppCompatActivity {
 
     private void getWindowData() {
         Log.i("getWindowData", "Function triggered");
-        Call<List<Window>> call = getApiClient().getAllWindows();
+        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows();
 
         call.enqueue(new Callback<List<Window>>() {
             @Override
@@ -107,32 +109,5 @@ public class RoomActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Could not GET data from API", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void getWindowCurrentState() {
-        Call<String> call = getApiClient().getCurrentState();
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.i("windowState", response.body());
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.i("onFailure getWindowCurrentState", t.getMessage());
-                Toast.makeText(getApplicationContext(), "Could not GET data from API", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
-    public static AirwindowApi getApiClient() {
-
-        return new Retrofit.Builder()
-                .baseUrl(AirwindowApi.BASE_URL_BACKEND)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(AirwindowApi.class);
     }
 }

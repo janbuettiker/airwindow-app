@@ -27,9 +27,8 @@ public class ApiClient {
     }
 
     private AirwindowApi createRetrofitClient() {
-        Log.i("AirwindowApi", "Retrofit Client built");
         return new Retrofit.Builder()
-                .baseUrl(AirwindowApi.BASE_URL)
+                .baseUrl(AirwindowApi.BASE_URL_BACKEND)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AirwindowApi.class);
