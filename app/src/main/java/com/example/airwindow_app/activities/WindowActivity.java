@@ -2,14 +2,14 @@ package com.example.airwindow_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.airwindow_app.R;
+import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.models.Window;
+import com.google.gson.Gson;
 
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +20,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WindowActivity extends AppCompatActivity {
 
@@ -98,5 +102,28 @@ public class WindowActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void createWindow(View view) {
+        Log.i("WindowActivity", "Create Window triggered");
+        Window w = new Window();
+        w.setName("Retrofit Window");
+        w.setDescription("Created by Retrofit POST");
+        w.setCurrentState("CLOSED");
+        w.setDesiredState("CLOSED");
+        ApiClient.getInstance().getApiClient().createWindow(w).enqueue(new Callback<Window>() {
+            @Override
+            public void onResponse(Call<Window> call, Response<Window> response) {
+                Log.i("onResponse", "Successfully POSTed window " + response.code());
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(w));
+            }
+
+            @Override
+            public void onFailure(Call<Window> call, Throwable t) {
+                Log.e("onFailure", "Failed to POST window: " + t.getMessage());
+
+            }
+        });
     }
 }

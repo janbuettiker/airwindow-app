@@ -125,7 +125,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:onClick="editWindowDialog"
+        android:onClick="createWindow"
         android:text="Sync"
         app:layout_constraintEnd_toEndOf="@+id/btWindowEdit"
         app:layout_constraintTop_toBottomOf="@+id/btWindowEdit" />

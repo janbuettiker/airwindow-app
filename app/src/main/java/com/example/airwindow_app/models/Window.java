@@ -16,7 +16,7 @@ public class Window {
     private String desiredState;
     @SerializedName("id")
     @Expose
-    private long id;
+    private transient long id;
     @SerializedName("name")
     @Expose
     private String name;
