@@ -3,6 +3,7 @@ package com.example.airwindow_app.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.api.WindowRepository;
 import com.example.airwindow_app.models.Window;
 import com.google.gson.Gson;
 
@@ -30,6 +31,8 @@ import retrofit2.Response;
 
 public class WindowActivity extends AppCompatActivity {
 
+    WindowRepository windowRepository;
+
     TextView windowNameTV;
     TextView windowDescriptionTV;
 
@@ -51,6 +54,8 @@ public class WindowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_window);
+
+        windowRepository = WindowRepository.getInstance();
 
         windowNameTV = findViewById(R.id.tvWindowName);
         windowDescriptionTV = findViewById(R.id.tvWindowDescription);
@@ -79,10 +84,10 @@ public class WindowActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     windowData.setWeatherAware("true");
-                    putWindow(windowData);
+                    putWindow();
                 } else {
                     windowData.setWeatherAware("false");
-                    putWindow(windowData);
+                    putWindow();
                 }
             }
         });
@@ -108,13 +113,9 @@ public class WindowActivity extends AppCompatActivity {
 
         windowOpenNowTB.setChecked(windowData.getCurrentState().equals("OPEN"));
         windowAutoModeTB.setChecked(windowData.getWeatherAware().equals("true"));
-
-
     }
 
     public void populateTimePicker(View view) {
-
-
 
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -154,7 +155,7 @@ public class WindowActivity extends AppCompatActivity {
                         setData();
 
                         // Update (PUT) changed data on Backend
-                        putWindow(windowData);
+                        putWindow();
 
                         Log.i("Window", windowData.toString());
                         dialog.cancel();
@@ -170,53 +171,19 @@ public class WindowActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void putWindow(Window w) {
-        ApiClient.getInstance()
-                .getApiClient()
-                .putWindow(Long.valueOf(1), windowData.getId(), windowData)
-                .enqueue(new Callback<Window>() {
-                    @Override
-                    public void onResponse(Call<Window> call, Response<Window> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse putWindow", "Successfully PUT window " + response.code() + response.message());
-                        } else {
-                            Log.e("onResponse putWindow", "Failed to PUT window " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Window> call, Throwable t) {
-                        Log.e("onFailure putWindow", "Failed to PUT window " + t.getMessage());
-                    }
-                });
+    public void putWindow() {
+        windowRepository.putWindow(windowData);
     }
 
     public void patchWindowState(Window w, String stateType, String stateValue) {
-        ApiClient.getInstance()
-                .getApiClient()
-                .patchWindowState(w.getId(), stateType, stateValue)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse patchWindowState", "Successfully updated state " + response.message());
 
-                            if (stateValue.equals("OPEN")) {
-                                windowOpenNowTB.setChecked(true);
-                            } else {
-                                windowOpenNowTB.setChecked(false);
-                            }
+        windowRepository.patchWindowState(w, stateType, stateValue);
 
-                        } else {
-                            Log.e("onResponse patchWindowState", "Failed to PATCH window state " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("onFailure patchWindowState", "Failed to PATCH window state " + t.getMessage());
-                    }
-                });
+        if (stateValue.equals("OPEN")) {
+            windowOpenNowTB.setChecked(true);
+        } else {
+            windowOpenNowTB.setChecked(false);
+        }
     }
 
     public void postScheduledTask(View view) {
@@ -239,26 +206,7 @@ public class WindowActivity extends AppCompatActivity {
             stateValue = "CLOSED";
         }
 
-        ApiClient.getInstance()
-                .getApiClient()
-                .postScheduledTask(windowData.getId(), hour, minute, stateValue)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse postScheduledTask", "Successfully scheduled task " + response.message());
-
-                        } else {
-                            Log.e("onResponse postScheduledTask", "Failed to POST scheduled task " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("onFailure postScheduledTask", "Failed to POST scheduled task " + t.getMessage());
-
-                    }
-                });
+        windowRepository.postScheduledTask(windowData, hour, minute, stateValue);
     }
 
     public void postOneTimeTask(View view) {
@@ -280,77 +228,13 @@ public class WindowActivity extends AppCompatActivity {
             stateValue = "CLOSED";
         }
 
-        ApiClient.getInstance()
-                .getApiClient()
-                .postOneTimeTask(windowData.getId(), minute, stateValue)
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse postOneTimeTask", "Successfully scheduled one time task " + response.message());
+        windowRepository.postOneTimeTask(windowData, minute, stateValue);
 
-                        } else {
-                            Log.e("onResponse postOneTimeTask", "Failed to POST one time task " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("onFailure postOneTimeTask", "Failed to POST one time task " + t.getMessage());
-
-                    }
-                });
     }
 
     public void deleteWindow(View view) {
 
-        // TODO: Room id programmatically
-        Long roomId = Long.valueOf(1);
-
-        ApiClient.getInstance()
-                .getApiClient()
-                .deleteWindow(roomId, windowData.getId())
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse deleteWindow", "Successfully deleted window with id: " + windowData.getId());
-                            finish();
-                        } else {
-                            Log.e("onResponse deleteWindow", "Failed to DELETE window");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("onFailure deleteWindow", "Failed to DELETE window " + t.getMessage());
-                    }
-                });
-    }
-
-    /*
-        Not used but would work...
-    */
-    public void createWindow(View view) {
-        Log.i("WindowActivity", "Create Window triggered");
-        Window w = new Window();
-        w.setName("Retrofit Window");
-        w.setDescription("Created by Retrofit POST");
-        w.setCurrentState("CLOSED");
-        w.setDesiredState("CLOSED");
-        ApiClient.getInstance().getApiClient().createWindow(w).enqueue(new Callback<Window>() {
-            @Override
-            public void onResponse(Call<Window> call, Response<Window> response) {
-                Log.i("onResponse createWindow", "Successfully POSTed window " + response.code());
-                Gson gson = new Gson();
-                System.out.println(gson.toJson(w));
-            }
-
-            @Override
-            public void onFailure(Call<Window> call, Throwable t) {
-                Log.e("onFailure createWindow", "Failed to POST window: " + t.getMessage());
-
-            }
-        });
+        windowRepository.deleteWindow(windowData);
+        finish();
     }
 }
