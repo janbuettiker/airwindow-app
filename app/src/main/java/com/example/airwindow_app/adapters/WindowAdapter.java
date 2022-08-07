@@ -15,20 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.activities.WindowActivity;
+import com.example.airwindow_app.models.Window;
 
 import java.util.ArrayList;
 
 public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowViewHolder> {
 
-    ArrayList<String> nameData;
-    ArrayList<String> descriptionData;
+    ArrayList<Window> windowData;
     int imageData[];
     Context context;
 
-    public WindowAdapter(Context ct, ArrayList<String> names, ArrayList<String> descriptions, int images[]) {
+    public WindowAdapter(Context ct, ArrayList<Window> windows, int images[]) {
         context = ct;
-        nameData = names;
-        descriptionData = descriptions;
+        windowData = windows;
         imageData = images;
 
     }
@@ -43,18 +42,19 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
 
     @Override
     public void onBindViewHolder(@NonNull WindowViewHolder holder, final int position) {
-        // TODO Demo data, to be replaced
+
         // Sets the view items to positional values in the data arrays
-        holder.nameTV.setText(nameData.get(position));
-        holder.descriptionTV.setText(descriptionData.get(position));
+        holder.nameTV.setText(windowData.get(position).getName());
+        holder.descriptionTV.setText(windowData.get(position).getDescription());
         holder.iconIV.setImageResource(imageData[0]);
 
         holder.windowRowLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, WindowActivity.class);
+
             // Send data to Window Activity, omit imagedata as we do not care for the moment
-            Log.i("OnclickListener", nameData.get(position));
-            intent.putExtra("nameData", nameData.get(position));
-            intent.putExtra("descriptionData", descriptionData.get(position));
+            Log.i("OnclickListener", windowData.get(position).getName());
+            intent.putExtra("windowData", windowData.get(position));
+
             // Needed because we create the recyclerview outside of onCreate()
             // Thus, the Adapter is not properly attached
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -64,7 +64,7 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
 
     @Override
     public int getItemCount() {
-        return nameData.size();
+        return windowData.size();
     }
 
     public class WindowViewHolder extends RecyclerView.ViewHolder {

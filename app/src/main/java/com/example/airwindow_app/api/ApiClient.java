@@ -4,6 +4,7 @@ import android.util.Log;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient {
 
@@ -29,6 +30,7 @@ public class ApiClient {
     private AirwindowApi createRetrofitClient() {
         return new Retrofit.Builder()
                 .baseUrl(AirwindowApi.BASE_URL_BACKEND)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AirwindowApi.class);

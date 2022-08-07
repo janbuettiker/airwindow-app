@@ -32,8 +32,8 @@ public class RoomActivity extends AppCompatActivity {
     String nameData, descriptionData;
     int imageData;
 
-    ArrayList<String> windowNames;
-    ArrayList<String> windowDescriptions;
+    ArrayList<Window> windows;
+
     int windowImages[] = {R.drawable.window};
 
     @Override
@@ -50,12 +50,15 @@ public class RoomActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rvRoomWindowList);
 
-        windowNames = new ArrayList<>();
-        windowDescriptions = new ArrayList<>();
-        setWindowData();
+        windows = new ArrayList<>();
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setWindowData();
+    }
 
     private void getRoomDataFromIntent() {
         if(getIntent().hasExtra("roomNameData") && getIntent().hasExtra("roomDescriptionData") && getIntent().hasExtra("roomImageData")) {
@@ -76,21 +79,24 @@ public class RoomActivity extends AppCompatActivity {
 
     private void setWindowData() {
         Log.i("getWindowData", "Function triggered");
+
+        // Clear arraylist to avoid duplicates
+        windows.clear();
+
         Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows();
 
         call.enqueue(new Callback<List<Window>>() {
             @Override
             public void onResponse(Call<List<Window>> call, Response<List<Window>> response) {
-                Log.i("onResponse", "Code: " + response.code());
+                Log.i("onResponse", "Code: " + response.code() + response.body());
 
                 List<Window> windowList = response.body();
                 Log.i("windowList", "Size: " + windowList.size());
 
                 for (int i = 0; i < windowList.size(); i++) {
-                    windowNames.add(windowList.get(i).getName());
-                    windowDescriptions.add(windowList.get(i).getDescription());
+                    windows.add(windowList.get(i));
 
-                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), windowNames, windowDescriptions, windowImages);
+                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), windows, windowImages);
                     recyclerView.setAdapter(windowAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 }
