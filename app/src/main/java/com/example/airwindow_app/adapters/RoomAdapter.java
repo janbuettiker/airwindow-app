@@ -22,13 +22,14 @@ import java.util.Random;
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
 
     ArrayList<Room> roomData;
-    int imageData[];
     Context context;
 
-    public RoomAdapter(Context ct, ArrayList<Room> rooms, int images[]) {
+    // TODO: Actual images for rooms and not just placeholders
+    int roomImages[] = {R.drawable.room_living, R.drawable.room_bath, R.drawable.room_office};
+
+    public RoomAdapter(Context ct, ArrayList<Room> rooms) {
         context = ct;
         roomData = rooms;
-        imageData = images;
     }
 
     @NonNull
@@ -42,17 +43,15 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
 
-        // random number between 0 - 2 for room Images
-        final int random = new Random().nextInt(3);
-
         holder.nameTV.setText(roomData.get(position).getName());
         holder.descriptionTV.setText(roomData.get(position).getDescription());
-        holder.iconIV.setImageResource(imageData[random]);
+        holder.iconIV.setImageResource(roomImages[roomData.get(position).getImage()]);
+
 
         holder.roomRowLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, RoomActivity.class);
 
-            intent.putExtra("roomDaata", roomData.get(position));
+            intent.putExtra("roomData", roomData.get(position));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             context.startActivity(intent);

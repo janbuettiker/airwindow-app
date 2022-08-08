@@ -40,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<Room> rooms;
 
     String roomNames[], roomDescriptions[];
-    int roomImages[] = {R.drawable.room_living, R.drawable.room_bath, R.drawable.room_office};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                     for (int i = 0; i < roomList.size(); i++) {
                         rooms.add(roomList.get(i));
 
-                        RoomAdapter roomAdapter = new RoomAdapter(getApplicationContext(), rooms, roomImages);
+                        RoomAdapter roomAdapter = new RoomAdapter(getApplicationContext(), rooms);
                         recyclerView.setAdapter(roomAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 

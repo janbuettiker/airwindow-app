@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.WindowAdapter;
 import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
 
 import java.util.ArrayList;
@@ -29,12 +30,16 @@ public class RoomActivity extends AppCompatActivity {
     TextView roomNameTV;
     TextView roomDescriptionTV;
     ImageView roomIconIV;
-    String nameData, descriptionData;
+
+    Room roomData;
     int imageData;
 
     ArrayList<Window> windows;
 
     int windowImages[] = {R.drawable.window};
+
+    // TODO: Actual images for rooms and not just placeholders
+    int roomImages[] = {R.drawable.room_living, R.drawable.room_bath, R.drawable.room_office};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +64,20 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void getRoomDataFromIntent() {
-        if(getIntent().hasExtra("roomNameData") && getIntent().hasExtra("roomDescriptionData") && getIntent().hasExtra("roomImageData")) {
 
-            nameData = getIntent().getStringExtra("roomNameData");
-            descriptionData = getIntent().getStringExtra("roomDescriptionData");
-            imageData = getIntent().getIntExtra("roomImageData", R.drawable.room_bed);
+        if(getIntent().hasExtra("roomData")) {
+
+            roomData = (Room) getIntent().getParcelableExtra("roomData");
+
         } else {
             Toast.makeText(this, "Data is missing", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void setRoomData() {
-        roomNameTV.setText(nameData);
-        roomDescriptionTV.setText(descriptionData);
-        roomIconIV.setImageResource(imageData);
+        roomNameTV.setText(roomData.getName());
+        roomDescriptionTV.setText(roomData.getDescription());
+        roomIconIV.setImageResource(roomImages[roomData.getImage()]);
     }
 
     private void setWindowData() {

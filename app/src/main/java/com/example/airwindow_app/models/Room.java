@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Random;
+
 public class Room implements Parcelable {
 
     @SerializedName("id")
@@ -19,10 +21,23 @@ public class Room implements Parcelable {
     @Expose
     private String description;
 
+    /*
+        TODO: Solid solution to save image of the room
+        As of now, we will just randomly assign an id to the room upon its creation.
+        Also do not expose it for gson (de)-serialization
+     */
+    @Expose(serialize = false, deserialize = false)
+    private Integer image;
+
     protected Room(Parcel in) {
         id = in.readLong();
         name = in.readString();
         description = in.readString();
+        image = in.readInt();
+    }
+
+    protected Room() {
+        image = new Random().nextInt(3);
     }
 
     public static final Creator<Room> CREATOR = new Creator<Room>() {
@@ -47,6 +62,7 @@ public class Room implements Parcelable {
         dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(description);
+        dest.writeInt(image);
     }
 
     public long getId() { return id; }
@@ -59,9 +75,11 @@ public class Room implements Parcelable {
 
     public String getDescription() { return description; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) { this.description = description; }
+
+    public Integer getImage() { return image; }
+
+    public void setImage(Integer image) { this.image = image; }
 
     @Override
     public String toString() {
