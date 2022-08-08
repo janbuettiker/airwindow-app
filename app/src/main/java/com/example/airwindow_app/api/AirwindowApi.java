@@ -33,8 +33,8 @@ public interface AirwindowApi {
                        @Path("roomid") Long roomId,
                        @Body Room room);
 
-    @GET("rooms/1/windows")
-    Call<List<Window>> getAllWindows();
+    @GET("rooms/{roomid}/windows")
+    Call<List<Window>> getAllWindows(@Path("roomid") Long roomId);
 
     @POST("rooms/1/windows")
     Call<Window> createWindow(@Body Window window);

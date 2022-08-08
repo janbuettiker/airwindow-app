@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.WindowAdapter;
 import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.api.RoomRepository;
 import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
 
@@ -24,6 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RoomActivity extends AppCompatActivity {
+
+    RoomRepository roomRepository;
 
     RecyclerView recyclerView;
 
@@ -45,6 +53,8 @@ public class RoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
+
+        roomRepository = RoomRepository.getInstance();
 
         roomNameTV = findViewById(R.id.tvRoomName);
         roomDescriptionTV = findViewById(R.id.tvRoomDescription);
@@ -86,7 +96,7 @@ public class RoomActivity extends AppCompatActivity {
         // Clear arraylist to avoid duplicates
         windows.clear();
 
-        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows();
+        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows(roomData.getId());
 
         call.enqueue(new Callback<List<Window>>() {
             @Override
@@ -112,4 +122,47 @@ public class RoomActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void editWindowDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        // Create object of the dialog view to gain access to the EditText fields
+        View editV = inflater.inflate(R.layout.edit_dialog, null);
+
+        EditText editNameET = editV.findViewById(R.id.etWindowName);
+        editNameET.setText(roomData.getName());
+        EditText editDescriptionET = editV.findViewById(R.id.etWindowDescription);
+        editDescriptionET.setText(roomData.getDescription());
+
+        builder.setMessage(R.string.edit_message)
+                .setTitle(R.string.room_edit_title)
+                .setView(editV)
+                .setPositiveButton(R.string.window_edit_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Set text of EditText elements of the dialog
+                        roomData.setName(editNameET.getText().toString());
+                        roomData.setDescription(editDescriptionET.getText().toString());
+                        // "refresh" data
+                        setRoomData();
+
+                        // Update (PUT) changed data on Backend
+                        putRoom();
+
+                        Log.i("Room", roomData.toString());
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.window_edit_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void putRoom() { roomRepository.putRoom(roomData); }
 }

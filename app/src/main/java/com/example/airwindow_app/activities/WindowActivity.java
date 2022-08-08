@@ -86,12 +86,12 @@ public class WindowActivity extends AppCompatActivity {
             }
         });
 
-        getData();
-        setData();
+        getWindowDataFromIntent();
+        setWindowData();
 
     }
 
-    private void getData() {
+    private void getWindowDataFromIntent() {
         if(getIntent().hasExtra("windowData")) {
 
             windowData = (Window) getIntent().getParcelableExtra("windowData");
@@ -101,7 +101,7 @@ public class WindowActivity extends AppCompatActivity {
         }
     }
 
-    private void setData() {
+    private void setWindowData() {
         windowNameTV.setText(windowData.getName());
         windowDescriptionTV.setText(windowData.getDescription());
 
@@ -135,7 +135,7 @@ public class WindowActivity extends AppCompatActivity {
         EditText editDescriptionET = editV.findViewById(R.id.etWindowDescription);
         editDescriptionET.setText(windowData.getDescription());
 
-        builder.setMessage(R.string.window_edit_message)
+        builder.setMessage(R.string.edit_message)
                 .setTitle(R.string.window_edit_title)
                 .setView(editV)
                 .setPositiveButton(R.string.window_edit_accept, new DialogInterface.OnClickListener() {
@@ -146,7 +146,7 @@ public class WindowActivity extends AppCompatActivity {
                         windowData.setName(editNameET.getText().toString());
                         windowData.setDescription(editDescriptionET.getText().toString());
                         // "refresh" data
-                        setData();
+                        setWindowData();
 
                         // Update (PUT) changed data on Backend
                         putWindow();

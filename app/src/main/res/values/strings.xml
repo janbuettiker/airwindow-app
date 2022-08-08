@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">airwindow-app</string>
+    <string name="home_edit_title">Edit Home</string>
+    <string name="room_edit_title">Edit Room</string>
     <string name="window_edit_title">Edit Window</string>
-    <string name="window_edit_message">Please input your new values</string>
+    <string name="edit_message">Please input your new values</string>
     <string name="window_edit_accept">Accept</string>
     <string name="window_edit_cancel">Cancel</string>
 

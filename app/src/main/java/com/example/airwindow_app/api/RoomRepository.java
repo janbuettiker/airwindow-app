@@ -57,4 +57,25 @@ public class RoomRepository {
 
         return rooms;
     }
+
+    public void putRoom(Room r) {
+        ApiClient.getInstance()
+                .getApiClient()
+                .putRoom(Long.valueOf(1), r.getId(), r)
+                .enqueue(new Callback<Room>() {
+                    @Override
+                    public void onResponse(Call<Room> call, Response<Room> response) {
+                        if (response.code() == 200) {
+                            Log.i("onResponse putRoom", "Successfully PUT room " + response.message());
+                        } else {
+                            Log.e("onResponse putRoom", "Failed to PUT room " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Room> call, Throwable t) {
+                        Log.e("onFailure putRoom", "Failed to PUT room " + t.getMessage());
+                    }
+                });
+    }
 }
