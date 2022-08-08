@@ -45,12 +45,10 @@ public class RoomActivity extends AppCompatActivity {
         roomDescriptionTV = findViewById(R.id.tvRoomDescription);
         roomIconIV = findViewById(R.id.ivRoomIcon);
 
+        windows = new ArrayList<>();
         getRoomDataFromIntent();
         setRoomData();
-
         recyclerView = findViewById(R.id.rvRoomWindowList);
-
-        windows = new ArrayList<>();
 
     }
 

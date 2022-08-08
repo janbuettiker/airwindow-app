@@ -14,17 +14,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.activities.RoomActivity;
+import com.example.airwindow_app.models.Room;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
 
-    String nameData[], descriptionData[];
+    ArrayList<Room> roomData;
     int imageData[];
     Context context;
 
-    public RoomAdapter(Context ct, String names[], String descriptions[], int images[]) {
+    public RoomAdapter(Context ct, ArrayList<Room> rooms, int images[]) {
         context = ct;
-        nameData = names;
-        descriptionData = descriptions;
+        roomData = rooms;
         imageData = images;
     }
 
@@ -38,23 +41,27 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
-        // TODO Demo data to be replaced
-        holder.nameTV.setText(nameData[position]);
-        holder.descriptionTV.setText(descriptionData[position]);
-        holder.iconIV.setImageResource(imageData[position]);
+
+        // random number between 0 - 2 for room Images
+        final int random = new Random().nextInt(3);
+
+        holder.nameTV.setText(roomData.get(position).getName());
+        holder.descriptionTV.setText(roomData.get(position).getDescription());
+        holder.iconIV.setImageResource(imageData[random]);
 
         holder.roomRowLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, RoomActivity.class);
-            intent.putExtra("roomNameData", nameData[position]);
-            intent.putExtra("roomDescriptionData", descriptionData[position]);
-            intent.putExtra("roomImageData", imageData[position]);
+
+            intent.putExtra("roomDaata", roomData.get(position));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return nameData.length;
+        return roomData.size();
     }
 
     public class RoomViewHolder extends RecyclerView.ViewHolder {

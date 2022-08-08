@@ -32,7 +32,7 @@ public class WindowRepository {
 
             @Override
             public void onFailure(Call<Window> call, Throwable t) {
-                Log.e("onFailure createWindow", "Failed to POST window: " + t.getMessage());
+                Log.e("onFailure createWindow", "Failed to POST window " + t.getMessage());
 
             }
         });
@@ -73,7 +73,7 @@ public class WindowRepository {
                         if (response.code() == 200) {
                             Log.i("onResponse deleteWindow", "Successfully deleted window with id: " + w.getId());
                         } else {
-                            Log.e("onResponse deleteWindow", "Failed to DELETE window");
+                            Log.e("onResponse deleteWindow", "Failed to DELETE window " + response.code());
                         }
                     }
 
