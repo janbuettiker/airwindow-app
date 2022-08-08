@@ -2,10 +2,8 @@ package com.example.airwindow_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.airwindow_app.R;
-import com.example.airwindow_app.api.ApiClient;
 import com.example.airwindow_app.api.WindowRepository;
 import com.example.airwindow_app.models.Window;
-import com.google.gson.Gson;
 
 
 import android.app.AlertDialog;
@@ -24,10 +22,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.Locale;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class WindowActivity extends AppCompatActivity {
 
@@ -134,7 +128,7 @@ public class WindowActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         // Create object of the dialog view to gain access to the EditText fields
-        View editV = inflater.inflate(R.layout.window_edit_dialog, null);
+        View editV = inflater.inflate(R.layout.edit_dialog, null);
 
         EditText editNameET = editV.findViewById(R.id.etWindowName);
         editNameET.setText(windowData.getName());
