@@ -14,6 +14,23 @@
         android:theme="@style/Theme.Airwindowapp"
         tools:targetApi="31">
         <activity
+            android:name=".activities.HomeActivity"
+            android:exported="false"
+            android:label="Home Overview"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".activities.RoomActivity"
+            android:exported="false"
+            android:label="Room Overview"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.HomeActivity" />
+        <activity
+            android:name=".activities.WindowActivity"
+            android:exported="false"
+            android:label="Window Settings"
+            android:parentActivityName=".activities.RoomActivity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -23,5 +40,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

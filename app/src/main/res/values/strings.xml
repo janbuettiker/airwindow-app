@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">airwindow-app</string>
+    <string name="window_edit_title">Edit Window</string>
+    <string name="window_edit_message">Please input your new values</string>
+    <string name="window_edit_accept">Accept</string>
+    <string name="window_edit_cancel">Cancel</string>
+
+    <string name="home_name">Jan\'s Home</string>
+    <string name="home_description">This might be a description with value</string>
+
+    <string-array name="room_names">
+        <item>Dining Room</item>
+        <item>Bedroom Parents</item>
+        <item>Office Jan</item>
+    </string-array>
+    <string-array name="room_descriptions">
+        <item>eat a Big Mac</item>
+        <item>where the magic happens</item>
+        <item>do not enter</item>
+    </string-array>
+
+    <string-array name="window_names">
+        <item>Window Bedroom South</item>
+        <item>Window Bathroom North</item>
+        <item>Roofwindow Bathroom</item>
+    </string-array>
+    <string-array name="window_descriptions">
+        <item>only open in the mornings</item>
+        <item>don\'t keep open too often</item>
+        <item>hope a bird doesn\'t defecate</item>
+    </string-array>
 </resources>
