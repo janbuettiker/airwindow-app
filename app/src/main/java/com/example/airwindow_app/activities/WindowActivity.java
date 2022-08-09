@@ -63,11 +63,19 @@ public class WindowActivity extends AppCompatActivity {
         windowOpenNowTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                StringBuilder desiredStateStr = new StringBuilder();
+                desiredStateStr.append(getResources().getText(R.string.window_desired_state_text));
+
                 if(isChecked) {
                     patchWindowState(windowData,"DESIRED", "OPEN");
+                    desiredStateStr.append(getResources().getText(R.string.window_state_open));
                 } else {
                     patchWindowState(windowData, "DESIRED", "CLOSED");
+                    desiredStateStr.append(getResources().getText(R.string.window_state_closed));
                 }
+
+                windowDesiredStateTV.setText(desiredStateStr.toString());
             }
         });
 
@@ -103,7 +111,7 @@ public class WindowActivity extends AppCompatActivity {
             roomId = getIntent().getLongExtra("roomId", 0);
 
         } else {
-            Toast.makeText(this, "Data is missing", Toast.LENGTH_SHORT).show();
+            Log.e("getWindowDataFromIntent", "No Intent Data received");
         }
     }
 
@@ -185,6 +193,7 @@ public class WindowActivity extends AppCompatActivity {
 
                         // Update (PUT) changed data on Backend
                         putWindow();
+                        Toast.makeText(getApplicationContext(), getString(R.string.window_toast_edit_text), Toast.LENGTH_LONG).show();
 
                         Log.i("Window", windowData.toString());
                         dialog.cancel();
@@ -236,6 +245,7 @@ public class WindowActivity extends AppCompatActivity {
         } else {
             windowOpenNowTB.setChecked(false);
         }
+
     }
 
     public void postScheduledTask(View view) {
@@ -259,6 +269,8 @@ public class WindowActivity extends AppCompatActivity {
         }
 
         windowRepository.postScheduledTask(windowData, hour, minute, stateValue);
+        Toast.makeText(getApplicationContext(), getString(R.string.window_toast_scheduledtask_text), Toast.LENGTH_LONG).show();
+
     }
 
     public void postOneTimeTask(View view) {
@@ -281,6 +293,8 @@ public class WindowActivity extends AppCompatActivity {
         }
 
         windowRepository.postOneTimeTask(windowData, minute, stateValue);
+        Toast.makeText(getApplicationContext(), getString(R.string.window_toast_onetimetask_text), Toast.LENGTH_LONG).show();
+
 
     }
 

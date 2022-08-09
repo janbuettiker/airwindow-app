@@ -44,4 +44,10 @@
     <string name="window_delete_button">Löschen</string>
     <string name="window_current_state_text">"Aktueller Status: "</string>
     <string name="window_desired_state_text">"Gewünschter Status: "</string>
+    <string name="window_toast_edit_text">Fenster erfolgreich angepasst</string>
+    <string name="window_toast_scheduledtask_text">Täglicher Task erfolgreich eingeplant</string>
+    <string name="window_toast_onetimetask_text">Einmaliger Task erfolgreich eingeplant</string>
+    <string name="room_toast_edit_text">Raum erfolgreich angepasst</string>
+    <string name="home_toast_edit_text">Haus erfolgreich angepasst</string>
+    <string name="window_toast_statechange_text">Gewünschter Status erfolgreich angepasst</string>
 </resources>
