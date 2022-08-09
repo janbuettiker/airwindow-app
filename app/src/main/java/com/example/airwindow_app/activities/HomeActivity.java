@@ -50,6 +50,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        getSupportActionBar().setTitle(R.string.home_title);
+
         roomRepository = RoomRepository.getInstance();
 
         homeId = Long.valueOf(1);

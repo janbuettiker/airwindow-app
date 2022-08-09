@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="addRoomDialog"
-        android:text="Add Room"
+        android:text="@string/home_add_room_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvHomeRoomList" />
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="editHomeDialog"
-        android:text="Edit Home"
+        android:text="@string/home_edit_button"
         app:layout_constraintEnd_toEndOf="@+id/btHomeAddRoom"
         app:layout_constraintTop_toBottomOf="@+id/btHomeAddRoom" />
 

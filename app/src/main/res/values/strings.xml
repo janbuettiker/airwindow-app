@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">airwindow-app</string>
+    <string name="app_name">AirWindow</string>
 
     <string name="home_edit_title">Edit Home</string>
     <string name="room_edit_title">Edit Room</string>
@@ -25,28 +25,31 @@
     <string name="window_delete_title">Delete Window</string>
     <string name="window_delete_message">Please confirm window deletion</string>
 
-    <string name="home_name">Jan\'s Home</string>
-    <string name="home_description">This might be a description with value</string>
+    <string name="home_title">Home Overview</string>
+    <string name="home_add_room_button">Add Room</string>
+    <string name="home_edit_button">Edit Home</string>
 
-    <string-array name="room_names">
-        <item>Dining Room</item>
-        <item>Bedroom Parents</item>
-        <item>Office Jan</item>
-    </string-array>
-    <string-array name="room_descriptions">
-        <item>eat a Big Mac</item>
-        <item>where the magic happens</item>
-        <item>do not enter</item>
-    </string-array>
+    <string name="room_title">Room Overview</string>
+    <string name="room_add_window_button">Add Window</string>
+    <string name="room_edit_button">Edit Room</string>
+    <string name="room_delete_button">Delete Room</string>
 
-    <string-array name="window_names">
-        <item>Window Bedroom South</item>
-        <item>Window Bathroom North</item>
-        <item>Roofwindow Bathroom</item>
-    </string-array>
-    <string-array name="window_descriptions">
-        <item>only open in the mornings</item>
-        <item>don\'t keep open too often</item>
-        <item>hope a bird doesn\'t defecate</item>
-    </string-array>
+    <string name="window_title">Window Settings</string>
+    <string name="window_open_text">Open or Close</string>
+    <string name="window_open_togglebutton_on">Open</string>
+    <string name="window_open_togglebutton_off">Closed</string>
+    <string name="window_scheduled_task_text">Open or Close daily at given time</string>
+    <string name="window_onetime_task_text">Open or Close in given minutes</string>
+    <string name="window_time_button">Time</string>
+    <string name="window_minute_hint">Minutes</string>
+    <string name="window_open_action_togglebutton_on">Open</string>
+    <string name="window_open_action_togglebutton_off">Close</string>
+    <string name="window_task_button">Create Task</string>
+    <string name="window_weatheraware_text">Automatically Close</string>
+    <string name="window_weatheraware_togglebutton_on">On</string>
+    <string name="window_weatheraware_togglebutton_off">Off</string>
+    <string name="window_edit_button">Edit</string>
+    <string name="window_delete_button">Delete</string>
+
+
 </resources>

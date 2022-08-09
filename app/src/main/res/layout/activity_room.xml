@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="addWindowDialog"
-        android:text="Add Window"
+        android:text="@string/room_add_window_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvRoomWindowList" />
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="editRoomDialog"
-        android:text="Edit Room"
+        android:text="@string/room_edit_button"
         app:layout_constraintEnd_toEndOf="@+id/btRoomAddWindow"
         app:layout_constraintTop_toBottomOf="@+id/btRoomAddWindow" />
 
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="deleteRoomDialog"
-        android:text="Delete Room"
+        android:text="@string/room_delete_button"
         app:layout_constraintEnd_toEndOf="@+id/btRoomEdit"
         app:layout_constraintTop_toBottomOf="@+id/btRoomEdit" />
 
