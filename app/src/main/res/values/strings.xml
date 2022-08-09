@@ -52,6 +52,12 @@
     <string name="window_edit_button">Edit</string>
     <string name="window_delete_button">Delete</string>
     <string name="window_desired_state_text">Desired State:</string>
+    <string name="window_toast_edit_text">Successfully edited window</string>
+    <string name="window_toast_scheduledtask_text">Successfully scheduled daily task</string>
+    <string name="window_toast_onetimetask_text">Successfully scheduled one time task</string>
+    <string name="room_toast_edit_text">Successfully edited room</string>
+    <string name="home_toast_edit_text">Successfully edited home</string>
+    <string name="window_toast_statechange_text">Successfully changed desired state</string>
 
 
 </resources>

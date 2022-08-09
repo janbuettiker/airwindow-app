@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.RoomAdapter;
@@ -157,6 +158,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         // Update (PUT) changed data on Backend
                         putHome();
+                        Toast.makeText(getApplicationContext(), getString(R.string.home_toast_edit_text), Toast.LENGTH_LONG).show();
 
                         // "refresh" homedata
                         setHomeData();

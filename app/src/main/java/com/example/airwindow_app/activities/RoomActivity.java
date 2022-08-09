@@ -160,6 +160,8 @@ public class RoomActivity extends AppCompatActivity {
 
                         // Update (PUT) changed data on Backend
                         putRoom();
+                        Toast.makeText(getApplicationContext(), getString(R.string.room_toast_edit_text), Toast.LENGTH_LONG).show();
+
 
                         // "refresh" data
                         setRoomData();
