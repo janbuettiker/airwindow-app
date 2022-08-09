@@ -31,10 +31,28 @@
         android:id="@+id/tvWindowDescription"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:text="Description"
         app:layout_constraintStart_toStartOf="@+id/tvWindowName"
         app:layout_constraintTop_toBottomOf="@+id/tvWindowName" />
+
+    <TextView
+        android:id="@+id/tvWindowCurrentState"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Current State"
+        app:layout_constraintStart_toStartOf="@+id/tvWindowDescription"
+        app:layout_constraintTop_toBottomOf="@+id/tvWindowDescription" />
+
+    <TextView
+        android:id="@+id/tvWindowDesiredState"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Desired State"
+        app:layout_constraintStart_toStartOf="@+id/tvWindowCurrentState"
+        app:layout_constraintTop_toBottomOf="@+id/tvWindowCurrentState" />
 
     <ToggleButton
         android:id="@+id/tbWindowOpenNow"
@@ -42,8 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="ToggleButton"
-        android:textOff="@string/window_open_togglebutton_on"
-        android:textOn="@string/window_open_togglebutton_off"
+        android:textOff="@string/window_open_action_togglebutton_on"
+        android:textOn="@string/window_open_action_togglebutton_off"
         app:layout_constraintEnd_toEndOf="@+id/tvWindowDescription"
         app:layout_constraintTop_toBottomOf="@+id/ivWindowIcon" />
 

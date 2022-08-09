@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.activities.WindowActivity;
-import com.example.airwindow_app.api.WindowRepository;
 import com.example.airwindow_app.models.Window;
 
 import java.util.ArrayList;
@@ -26,15 +25,11 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
     int imageData[];
     Context context;
 
-    WindowRepository windowRepository;
-
     public WindowAdapter(Context ct, Long roomId, ArrayList<Window> windows, int images[]) {
         this.roomId = roomId;
         context = ct;
         windowData = windows;
         imageData = images;
-
-        windowRepository = WindowRepository.getInstance();
     }
 
     @NonNull

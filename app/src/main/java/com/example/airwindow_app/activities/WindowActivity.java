@@ -29,6 +29,8 @@ public class WindowActivity extends AppCompatActivity {
 
     TextView windowNameTV;
     TextView windowDescriptionTV;
+    TextView windowCurrentStateTV;
+    TextView windowDesiredStateTV;
 
     Window windowData;
     Long roomId;
@@ -54,6 +56,8 @@ public class WindowActivity extends AppCompatActivity {
 
         windowNameTV = findViewById(R.id.tvWindowName);
         windowDescriptionTV = findViewById(R.id.tvWindowDescription);
+        windowCurrentStateTV = findViewById(R.id.tvWindowCurrentState);
+        windowDesiredStateTV = findViewById(R.id.tvWindowDesiredState);
 
         windowOpenNowTB = findViewById(R.id.tbWindowOpenNow);
         windowOpenNowTB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -107,11 +111,40 @@ public class WindowActivity extends AppCompatActivity {
         windowNameTV.setText(windowData.getName());
         windowDescriptionTV.setText(windowData.getDescription());
 
-        windowOpenNowTB.setChecked(windowData.getCurrentState().equals("OPEN"));
+        windowOpenNowTB.setChecked(windowData.getDesiredState().equals("OPEN"));
         windowAutoModeTB.setChecked(windowData.getWeatherAware().equals("true"));
+
+        populateStateTextViews();
+    }
+
+    public void populateStateTextViews() {
+        StringBuilder currentStateStr = new StringBuilder();
+        currentStateStr.append(getResources().getText(R.string.window_current_state_text));
+
+        StringBuilder desiredStateStr = new StringBuilder();
+        desiredStateStr.append(getResources().getText(R.string.window_desired_state_text));
+
+        if (windowData.getCurrentState().equals("OPEN")) {
+            currentStateStr.append(getResources().getText(R.string.window_state_open));
+        } else {
+            currentStateStr.append(getResources().getText(R.string.window_state_closed));
+        }
+
+        if (windowData.getDesiredState().equals("OPEN")) {
+            desiredStateStr.append(getResources().getText(R.string.window_state_open));
+        } else {
+            desiredStateStr.append(getResources().getText(R.string.window_state_closed));
+        }
+
+        windowCurrentStateTV.setText(currentStateStr.toString());
+        windowDesiredStateTV.setText(desiredStateStr.toString());
     }
 
     public void populateTimePicker(View view) {
+
+        // Default time selection, also avoids another stupid nullpointer
+        timePickerHour = 0;
+        timePickerMinute = 0;
 
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
