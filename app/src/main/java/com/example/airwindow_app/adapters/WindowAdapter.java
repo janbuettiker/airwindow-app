@@ -2,7 +2,6 @@ package com.example.airwindow_app.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +20,16 @@ import java.util.ArrayList;
 
 public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowViewHolder> {
 
+    Long roomId;
     ArrayList<Window> windowData;
     int imageData[];
     Context context;
 
-    public WindowAdapter(Context ct, ArrayList<Window> windows, int images[]) {
+    public WindowAdapter(Context ct, Long roomId, ArrayList<Window> windows, int images[]) {
+        this.roomId = roomId;
         context = ct;
         windowData = windows;
         imageData = images;
-
     }
 
     @NonNull
@@ -52,8 +52,8 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
             Intent intent = new Intent(context, WindowActivity.class);
 
             // Send data to Window Activity, omit imagedata as we do not care for the moment
-            Log.i("OnclickListener", windowData.get(position).getName());
             intent.putExtra("windowData", windowData.get(position));
+            intent.putExtra("roomId", roomId);
 
             // Needed because we create the recyclerview outside of onCreate()
             // Thus, the Adapter is not properly attached

@@ -4,8 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,9 +18,14 @@ import android.widget.Toast;
 import com.example.airwindow_app.R;
 import com.example.airwindow_app.adapters.WindowAdapter;
 import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.api.RoomRepository;
+import com.example.airwindow_app.api.WindowRepository;
 import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +35,20 @@ import retrofit2.Response;
 
 public class RoomActivity extends AppCompatActivity {
 
+    RoomRepository roomRepository;
+    WindowRepository windowRepository;
+
     RecyclerView recyclerView;
+    WindowAdapter windowAdapter;
 
     TextView roomNameTV;
     TextView roomDescriptionTV;
     ImageView roomIconIV;
 
+    // TODO: Dynamic home, but for the scope of this project,
+    //  we will hardcode the one home that we have (id = 1)
+    Long homeId;
     Room roomData;
-    int imageData;
 
     ArrayList<Window> windows;
 
@@ -46,20 +62,27 @@ public class RoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
+        roomRepository = RoomRepository.getInstance();
+        windowRepository = WindowRepository.getInstance();
+
+        homeId = Long.valueOf(1);
+
         roomNameTV = findViewById(R.id.tvRoomName);
         roomDescriptionTV = findViewById(R.id.tvRoomDescription);
         roomIconIV = findViewById(R.id.ivRoomIcon);
 
         windows = new ArrayList<>();
         getRoomDataFromIntent();
-        setRoomData();
-        recyclerView = findViewById(R.id.rvRoomWindowList);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        recyclerView = findViewById(R.id.rvRoomWindowList);
+
+        setRoomData();
         setWindowData();
     }
 
@@ -81,17 +104,15 @@ public class RoomActivity extends AppCompatActivity {
     }
 
     private void setWindowData() {
-        Log.i("getWindowData", "Function triggered");
 
         // Clear arraylist to avoid duplicates
         windows.clear();
 
-        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows();
-
+        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows(roomData.getId());
         call.enqueue(new Callback<List<Window>>() {
             @Override
             public void onResponse(Call<List<Window>> call, Response<List<Window>> response) {
-                Log.i("onResponse", "Code: " + response.code() + response.body());
+                Log.i("onResponse setWindowData", "Code: " + response.code());
 
                 List<Window> windowList = response.body();
                 Log.i("windowList", "Size: " + windowList.size());
@@ -99,9 +120,11 @@ public class RoomActivity extends AppCompatActivity {
                 for (int i = 0; i < windowList.size(); i++) {
                     windows.add(windowList.get(i));
 
-                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), windows, windowImages);
+                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), roomData.getId(), windows, windowImages);
                     recyclerView.setAdapter(windowAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+                    windowAdapter.notifyItemRangeChanged(0, windowAdapter.getItemCount());
                 }
             }
 
@@ -112,4 +135,117 @@ public class RoomActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void editRoomDialog(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        // Create object of the dialog view to gain access to the EditText fields
+        View editV = inflater.inflate(R.layout.edit_dialog, null);
+
+        EditText editNameET = editV.findViewById(R.id.etName);
+        editNameET.setText(roomData.getName());
+        EditText editDescriptionET = editV.findViewById(R.id.etDescription);
+        editDescriptionET.setText(roomData.getDescription());
+
+        builder.setMessage(R.string.edit_message)
+                .setTitle(R.string.room_edit_title)
+                .setView(editV)
+                .setPositiveButton(R.string.dialog_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Set text of EditText elements of the dialog
+                        roomData.setName(editNameET.getText().toString());
+                        roomData.setDescription(editDescriptionET.getText().toString());
+
+                        // Update (PUT) changed data on Backend
+                        putRoom();
+
+                        // "refresh" data
+                        setRoomData();
+
+                        Log.i("Room", roomData.toString());
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void addWindowDialog(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        // Create object of the dialog view to gain access to the EditText fields
+        View editV = inflater.inflate(R.layout.edit_dialog, null);
+
+        EditText editNameET = editV.findViewById(R.id.etName);
+        editNameET.setHint(R.string.window_add_name_tv);
+        EditText editDescriptionET = editV.findViewById(R.id.etDescription);
+        editDescriptionET.setHint(R.string.window_add_description_tv);
+
+        builder.setMessage(R.string.window_add_message)
+                .setTitle(R.string.window_add_title)
+                .setView(editV)
+                .setPositiveButton(R.string.dialog_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Window w = new Window();
+                        w.setCurrentState("CLOSED");
+                        w.setDesiredState("CLOSED");
+                        w.setWeatherAware("false");
+                        w.setName(editNameET.getText().toString());
+                        w.setDescription(editDescriptionET.getText().toString());
+
+                        // create window
+                        createWindow(w);
+
+                        // refresh window recyclerview
+                        setWindowData();
+
+                        dialog.cancel();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void deleteRoomDialog(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.room_delete_title)
+                .setMessage(R.string.room_delete_message)
+                .setPositiveButton(R.string.dialog_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteRoom();
+                        setRoomData();
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void putRoom() { roomRepository.putRoom(homeId, roomData); }
+    public void deleteRoom() { roomRepository.deleteRoom(homeId, roomData); }
+
+    public void createWindow(Window w) { windowRepository.createWindow(roomData.getId(), w); }
 }

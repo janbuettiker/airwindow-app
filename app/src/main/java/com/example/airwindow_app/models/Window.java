@@ -10,7 +10,7 @@ public class Window implements Parcelable {
 
     @SerializedName("id")
     // id should only be set and never be sent to the backend
-    @Expose(deserialize = false)
+    @Expose(serialize = false)
     private long id;
     @SerializedName("name")
     @Expose

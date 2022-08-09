@@ -1,5 +1,6 @@
 package com.example.airwindow_app.api;
 
+import com.example.airwindow_app.models.Home;
 import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
 
@@ -25,19 +26,35 @@ public interface AirwindowApi {
      */
     String BASE_URL_BACKEND = "https://airwindow-api-jdk.prouddune-5091e507.westeurope.azurecontainerapps.io/";
 
+    @GET("homes/{homeid}")
+    Call<Home> getHomeById(@Path("homeid") Long homeId);
+
+    @PUT("homes/{homeid}")
+    Call<Home> putHome(@Path("homeid") Long homeId,
+                       @Body Home home);
+
     @GET("homes/{homeid}/rooms")
     Call<List<Room>> getAllRooms(@Path("homeid") Long homeId);
+
+    @POST("homes/{homeid}/rooms")
+    Call<Room> createRoom(@Path("homeid") Long homeId,
+                          @Body Room room);
 
     @PUT("homes/{homeid}/rooms/{roomid}")
     Call<Room> putRoom(@Path("homeid") Long homeId,
                        @Path("roomid") Long roomId,
                        @Body Room room);
 
-    @GET("rooms/1/windows")
-    Call<List<Window>> getAllWindows();
+    @DELETE("homes/{homeid}/rooms/{roomid}")
+    Call<String> deleteRoom(@Path("homeid") Long homeId,
+                            @Path("roomid") Long roomId);
 
-    @POST("rooms/1/windows")
-    Call<Window> createWindow(@Body Window window);
+    @GET("rooms/{roomid}/windows")
+    Call<List<Window>> getAllWindows(@Path("roomid") Long roomId);
+
+    @POST("rooms/{roomid}/windows")
+    Call<Window> createWindow(@Path("roomid") Long roomId,
+                              @Body Window window);
 
     @PUT("rooms/{roomid}/windows/{windowid}")
     Call<Window> putWindow(@Path("roomid") Long roomId,
