@@ -1,11 +1,29 @@
 <resources>
     <string name="app_name">airwindow-app</string>
+
     <string name="home_edit_title">Edit Home</string>
     <string name="room_edit_title">Edit Room</string>
     <string name="window_edit_title">Edit Window</string>
     <string name="edit_message">Please input your new values</string>
-    <string name="window_edit_accept">Accept</string>
-    <string name="window_edit_cancel">Cancel</string>
+
+    <string name="dialog_accept">Accept</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="room_add_title">Add Room</string>
+    <string name="room_add_message">Please input room information</string>
+    <string name="room_add_name_tv">Room Name</string>
+    <string name="room_add_description_tv">Room Description</string>
+
+    <string name="room_delete_title">Delete Room</string>
+    <string name="room_delete_message">Please confirm room deletion</string>
+
+    <string name="window_add_title">Add Window</string>
+    <string name="window_add_message">Please input window information</string>
+    <string name="window_add_name_tv">Window Name</string>
+    <string name="window_add_description_tv">Window Description</string>
+
+    <string name="window_delete_title">Delete Window</string>
+    <string name="window_delete_message">Please confirm window deletion</string>
 
     <string name="home_name">Jan\'s Home</string>
     <string name="home_description">This might be a description with value</string>

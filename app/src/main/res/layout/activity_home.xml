@@ -37,24 +37,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvHomeName" />
 
 
-    <Button
-        android:id="@+id/btHomeEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="Edit"
-        app:layout_constraintStart_toStartOf="@+id/tvHomeDescription"
-        app:layout_constraintTop_toBottomOf="@+id/tvHomeDescription" />
-
-    <Button
-        android:id="@+id/btHomeAddRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Add Room"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvHomeRoomList" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHomeRoomList"
         android:layout_width="359dp"
@@ -63,5 +45,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivHomeIcon" />
+
+    <Button
+        android:id="@+id/btHomeAddRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="addRoomDialog"
+        android:text="Add Room"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvHomeRoomList" />
+
+    <Button
+        android:id="@+id/btHomeEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="editHomeDialog"
+        android:text="Edit Home"
+        app:layout_constraintEnd_toEndOf="@+id/btHomeAddRoom"
+        app:layout_constraintTop_toBottomOf="@+id/btHomeAddRoom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

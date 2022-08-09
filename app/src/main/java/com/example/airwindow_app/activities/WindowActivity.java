@@ -31,6 +31,7 @@ public class WindowActivity extends AppCompatActivity {
     TextView windowDescriptionTV;
 
     Window windowData;
+    Long roomId;
 
     ToggleButton windowOpenNowTB;
 
@@ -95,6 +96,7 @@ public class WindowActivity extends AppCompatActivity {
         if(getIntent().hasExtra("windowData")) {
 
             windowData = (Window) getIntent().getParcelableExtra("windowData");
+            roomId = getIntent().getLongExtra("roomId", 0);
 
         } else {
             Toast.makeText(this, "Data is missing", Toast.LENGTH_SHORT).show();
@@ -130,15 +132,15 @@ public class WindowActivity extends AppCompatActivity {
         // Create object of the dialog view to gain access to the EditText fields
         View editV = inflater.inflate(R.layout.edit_dialog, null);
 
-        EditText editNameET = editV.findViewById(R.id.etWindowName);
+        EditText editNameET = editV.findViewById(R.id.etName);
         editNameET.setText(windowData.getName());
-        EditText editDescriptionET = editV.findViewById(R.id.etWindowDescription);
+        EditText editDescriptionET = editV.findViewById(R.id.etDescription);
         editDescriptionET.setText(windowData.getDescription());
 
         builder.setMessage(R.string.edit_message)
                 .setTitle(R.string.window_edit_title)
                 .setView(editV)
-                .setPositiveButton(R.string.window_edit_accept, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dialog_accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -155,7 +157,7 @@ public class WindowActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 })
-                .setNegativeButton(R.string.window_edit_cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -165,9 +167,32 @@ public class WindowActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void putWindow() {
-        windowRepository.putWindow(windowData);
+    public void deleteWindowDialog(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.window_delete_title)
+                .setMessage(R.string.window_delete_message)
+                .setPositiveButton(R.string.dialog_accept, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteWindow();
+                        setWindowData();
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
+    public void putWindow() {
+        windowRepository.putWindow(roomId, windowData);
+    }
+
+    public void deleteWindow() { windowRepository.deleteWindow(roomId, windowData); }
 
     public void patchWindowState(Window w, String stateType, String stateValue) {
 
@@ -226,9 +251,4 @@ public class WindowActivity extends AppCompatActivity {
 
     }
 
-    public void deleteWindow(View view) {
-
-        windowRepository.deleteWindow(windowData);
-        finish();
-    }
 }

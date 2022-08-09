@@ -1,8 +1,11 @@
 package com.example.airwindow_app.api;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.example.airwindow_app.models.Window;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,29 +22,38 @@ public class WindowRepository {
         return instance;
     }
 
-    public void createWindow(Window w) {
-        ApiClient.getInstance().getApiClient().createWindow(w).enqueue(new Callback<Window>() {
-            @Override
-            public void onResponse(Call<Window> call, Response<Window> response) {
-                if (response.code() == 200) {
-                    Log.i("onResponse createWindow", "Successfully POSTed window " + response.message());
-                } else {
-                    Log.e("onResponse createWindow", "Failed to POST window " + response.code());
-                }
-            }
+    public WindowRepository() {
 
-            @Override
-            public void onFailure(Call<Window> call, Throwable t) {
-                Log.e("onFailure createWindow", "Failed to POST window " + t.getMessage());
-
-            }
-        });
+        /*
+            Because we are doing stuff that we are not supposed to do (run api responses synchronously)
+            we need to alter the ThreadPolicy. Else this synchronous call will be blocked by Android
+         */
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
-    public void putWindow(Window w) {
+    /*
+        Runs synchronous so we can make sure
+        that when the window gets created, we do not run into
+        a timing issue when re-populating the recycler view
+    */
+    public void createWindow(Long roomId, Window w) {
+        try {
+            ApiClient.getInstance()
+                    .getApiClient()
+                    .createWindow(roomId, w)
+                    .execute();
+            Log.i("execute createWindow", "Successfully POSTed window");
+
+        }  catch (IOException e) {
+            Log.e("execute createWindow", "Failed to POST window " + e.getMessage());
+        }
+    }
+
+    public void putWindow(Long roomId, Window w) {
         ApiClient.getInstance()
                 .getApiClient()
-                .putWindow(Long.valueOf(1), w.getId(), w)
+                .putWindow(roomId, w.getId(), w)
                 .enqueue(new Callback<Window>() {
                     @Override
                     public void onResponse(Call<Window> call, Response<Window> response) {
@@ -59,29 +71,17 @@ public class WindowRepository {
                 });
     }
 
-    public void deleteWindow(Window w) {
+    public void deleteWindow(Long roomId, Window w) {
+        try {
+            ApiClient.getInstance()
+                    .getApiClient()
+                    .deleteWindow(roomId, w.getId())
+                    .execute();
+            Log.i("execute deleteWindow", "Successfully DELETEd window with id " + w.getId());
+        } catch (IOException e) {
+            Log.e("execute deleteWindow", "Failed to DELETE window");
+        }
 
-        // TODO: Room id programmatically
-        Long roomId = Long.valueOf(1);
-
-        ApiClient.getInstance()
-                .getApiClient()
-                .deleteWindow(roomId, w.getId())
-                .enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
-                            Log.i("onResponse deleteWindow", "Successfully deleted window with id: " + w.getId());
-                        } else {
-                            Log.e("onResponse deleteWindow", "Failed to DELETE window " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.e("onFailure deleteWindow", "Failed to DELETE window " + t.getMessage());
-                    }
-                });
     }
 
     public void patchWindowState(Window w, String stateType, String stateValue) {

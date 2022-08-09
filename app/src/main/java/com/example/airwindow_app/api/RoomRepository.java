@@ -1,10 +1,12 @@
 package com.example.airwindow_app.api;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +28,20 @@ public class RoomRepository {
     }
 
     private RoomRepository() {
+
+        /*
+            Because we are doing stuff that we are not supposed to do (run api responses synchronously)
+            we need to alter the ThreadPolicy. Else this synchronous call will be blocked by Android
+         */
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         rooms = new ArrayList<>();
     }
 
-    public ArrayList<Room> getRoomsByHomeId(Long homeId) {
 
+
+    public ArrayList<Room> getRoomsByHomeId(Long homeId) {
         rooms.clear();
 
         Call<List<Room>> call = ApiClient.getInstance().getApiClient().getAllRooms(homeId);
@@ -58,10 +69,29 @@ public class RoomRepository {
         return rooms;
     }
 
-    public void putRoom(Room r) {
+    /*
+        Runs synchronous so we can make sure
+        that when the room gets created, we do not run into
+        a timing issue when re-populating the recycler view
+     */
+    public void createRoom(Long homeId, Room r) {
+
+
+        try {
+            ApiClient.getInstance()
+                    .getApiClient()
+                    .createRoom(homeId, r)
+                    .execute();
+            Log.i("createRoom execution", "Successfully POSTed room");
+        } catch (IOException e) {
+            Log.e("createRoom execution", "Failed to create room " + e.getMessage());
+        }
+    }
+
+    public void putRoom(Long homeId, Room r) {
         ApiClient.getInstance()
                 .getApiClient()
-                .putRoom(Long.valueOf(1), r.getId(), r)
+                .putRoom(homeId, r.getId(), r)
                 .enqueue(new Callback<Room>() {
                     @Override
                     public void onResponse(Call<Room> call, Response<Room> response) {
@@ -77,5 +107,19 @@ public class RoomRepository {
                         Log.e("onFailure putRoom", "Failed to PUT room " + t.getMessage());
                     }
                 });
+    }
+
+    public void deleteRoom(Long homeId, Room room) {
+        try {
+            ApiClient.getInstance()
+                    .getApiClient()
+                    .deleteRoom(homeId, room.getId())
+                    .execute();
+
+            Log.i("execute deleteRoom", "Successfully DELETEd room with id " + room.getId());
+
+        } catch (IOException e) {
+            Log.e("execute deleteRoom", "Failed to DELETE room " + e.getMessage());
+        }
     }
 }

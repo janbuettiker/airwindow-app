@@ -173,7 +173,7 @@
         android:id="@+id/btWindowDelete"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:onClick="deleteWindow"
+        android:onClick="deleteWindowDialog"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="@+id/tbWindowAutoMode"
         app:layout_constraintTop_toTopOf="@+id/btWindowEdit" />

@@ -52,8 +52,8 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             Intent intent = new Intent(context, RoomActivity.class);
 
             intent.putExtra("roomData", roomData.get(position));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
     }

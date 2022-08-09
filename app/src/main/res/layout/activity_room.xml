@@ -37,25 +37,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvRoomName" />
 
 
-    <Button
-        android:id="@+id/btRoomEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:onClick="editWindowDialog"
-        android:text="Edit"
-        app:layout_constraintStart_toStartOf="@+id/tvRoomDescription"
-        app:layout_constraintTop_toBottomOf="@+id/tvRoomDescription" />
-
-    <Button
-        android:id="@+id/btRoomAddWindow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Add Window"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvRoomWindowList" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRoomWindowList"
         android:layout_width="359dp"
@@ -64,5 +45,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivRoomIcon" />
+
+    <Button
+        android:id="@+id/btRoomAddWindow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="addWindowDialog"
+        android:text="Add Window"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvRoomWindowList" />
+
+    <Button
+        android:id="@+id/btRoomEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="editRoomDialog"
+        android:text="Edit Room"
+        app:layout_constraintEnd_toEndOf="@+id/btRoomAddWindow"
+        app:layout_constraintTop_toBottomOf="@+id/btRoomAddWindow" />
+
+    <Button
+        android:id="@+id/btRoomDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="deleteRoomDialog"
+        android:text="Delete Room"
+        app:layout_constraintEnd_toEndOf="@+id/btRoomEdit"
+        app:layout_constraintTop_toBottomOf="@+id/btRoomEdit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
