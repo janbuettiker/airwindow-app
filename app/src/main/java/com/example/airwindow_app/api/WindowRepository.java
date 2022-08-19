@@ -57,7 +57,7 @@ public class WindowRepository {
                 .enqueue(new Callback<Window>() {
                     @Override
                     public void onResponse(Call<Window> call, Response<Window> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse putWindow", "Successfully PUT window " + response.message());
                         } else {
                             Log.e("onResponse putWindow", "Failed to PUT window " + response.code());
@@ -91,7 +91,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse patchWindowState", "Successfully updated state " + response.message());
                         } else {
                             Log.e("onResponse patchWindowState", "Failed to PATCH window state " + response.code());
@@ -112,7 +112,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse postScheduledTask", "Successfully scheduled task " + response.message());
 
                         } else {
@@ -135,7 +135,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse postOneTimeTask", "Successfully scheduled one time task " + response.message());
 
                         } else {

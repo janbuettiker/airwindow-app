@@ -110,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Room>>() {
             @Override
             public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
-                if (response.code() == 200) {
+                if (Integer.toString(response.code()).startsWith("2")) {
                     Log.i("onResponse getRoomsByHomeId", "Successfully GOT rooms " + response.message());
 
                     List<Room> roomList = response.body();
