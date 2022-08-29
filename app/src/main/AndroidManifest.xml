@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.airwindow_app">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,14 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Airwindowapp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.ScheduleActivity"
+            android:label="@string/schedule_title"
+            android:exported="false" />
         <activity
             android:name=".activities.HomeActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/home_title"
             android:launchMode="singleTop">
             <intent-filter>
-                 <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,7 +41,5 @@
             android:label="@string/window_title"
             android:parentActivityName=".activities.RoomActivity" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

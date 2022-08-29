@@ -58,6 +58,9 @@
     <string name="room_toast_edit_text">Successfully edited room</string>
     <string name="home_toast_edit_text">Successfully edited home</string>
     <string name="window_toast_statechange_text">Successfully changed desired state</string>
+    <string name="home_schedule_button">Schedules</string>
+    <string name="schedule_title">Schedules</string>
+    <string name="schedule_description">Define schedules for more than one window.</string>
 
 
 </resources>
