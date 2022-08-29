@@ -83,7 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<Home>() {
             @Override
             public void onResponse(Call<Home> call, Response<Home> response) {
-                if (response.code() == 200) {
+                if (Integer.toString(response.code()).startsWith("2")) {
                     Log.i("onResponse getHomeData", "Successfully GOT homes " + response.message());
 
                     homeData = response.body();

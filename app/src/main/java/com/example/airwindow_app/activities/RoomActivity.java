@@ -115,7 +115,6 @@ public class RoomActivity extends AppCompatActivity {
                 Log.i("onResponse setWindowData", "Code: " + response.code());
 
                 List<Window> windowList = response.body();
-                Log.i("windowList", "Size: " + windowList.size());
 
                 for (int i = 0; i < windowList.size(); i++) {
                     windows.add(windowList.get(i));
