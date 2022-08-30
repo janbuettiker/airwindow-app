@@ -39,7 +39,7 @@ public class RoomActivity extends AppCompatActivity {
     WindowRepository windowRepository;
 
     RecyclerView recyclerView;
-    WindowAdapter windowAdapter;
+    WindowAdapter adapter;
 
     TextView roomNameTV;
     TextView roomDescriptionTV;
@@ -50,7 +50,7 @@ public class RoomActivity extends AppCompatActivity {
     Long homeId;
     Room roomData;
 
-    ArrayList<Window> windows;
+    ArrayList<Window> windows = new ArrayList<>();
 
     int windowImages[] = {R.drawable.window};
 
@@ -71,16 +71,18 @@ public class RoomActivity extends AppCompatActivity {
         roomDescriptionTV = findViewById(R.id.tvRoomDescription);
         roomIconIV = findViewById(R.id.ivRoomIcon);
 
-        windows = new ArrayList<>();
         getRoomDataFromIntent();
+
+        this.recyclerView = findViewById(R.id.rvRoomWindowList);
+        adapter = new WindowAdapter(this, roomData.getId(), windows, windowImages);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        recyclerView = findViewById(R.id.rvRoomWindowList);
 
         setRoomData();
         setWindowData();
@@ -113,19 +115,9 @@ public class RoomActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Window>> call, Response<List<Window>> response) {
                 Log.i("onResponse setWindowData", "Code: " + response.code());
+                windows.addAll(response.body());
+                adapter.setWindowData(windows);
 
-                List<Window> windowList = response.body();
-                Log.i("windowList", "Size: " + windowList.size());
-
-                for (int i = 0; i < windowList.size(); i++) {
-                    windows.add(windowList.get(i));
-
-                    WindowAdapter windowAdapter = new WindowAdapter(getApplicationContext(), roomData.getId(), windows, windowImages);
-                    recyclerView.setAdapter(windowAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                    windowAdapter.notifyItemRangeChanged(0, windowAdapter.getItemCount());
-                }
             }
 
             @Override

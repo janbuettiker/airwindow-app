@@ -50,4 +50,7 @@
     <string name="room_toast_edit_text">Raum erfolgreich angepasst</string>
     <string name="home_toast_edit_text">Haus erfolgreich angepasst</string>
     <string name="window_toast_statechange_text">Gewünschter Status erfolgreich angepasst</string>
+    <string name="home_schedule_button">Routinen</string>
+    <string name="schedule_title">Routinen</string>
+    <string name="schedule_description">Definieren Sie Routinen für mehr als ein Fenster.</string>
 </resources>

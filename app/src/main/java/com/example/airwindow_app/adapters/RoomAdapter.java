@@ -32,6 +32,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         roomData = rooms;
     }
 
+    public void setRoomData(ArrayList<Room> rooms) {
+        this.roomData = rooms;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public RoomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,20 +47,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
-
-        holder.nameTV.setText(roomData.get(position).getName());
-        holder.descriptionTV.setText(roomData.get(position).getDescription());
-        holder.iconIV.setImageResource(roomImages[roomData.get(position).getImage()]);
-
-
-        holder.roomRowLayout.setOnClickListener(view -> {
-            Intent intent = new Intent(context, RoomActivity.class);
-
-            intent.putExtra("roomData", roomData.get(position));
-
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        });
+        holder.bind(roomData.get(position));
     }
 
     @Override
@@ -74,6 +66,21 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             descriptionTV = roomItemView.findViewById(R.id.tvRoomRowDescription);
             iconIV = roomItemView.findViewById(R.id.ivRoomRowIcon);
             roomRowLayout = roomItemView.findViewById(R.id.roomRowLayout);
+        }
+
+        void bind(final Room room) {
+            nameTV.setText(room.getName());
+            descriptionTV.setText(room.getDescription());
+            iconIV.setImageResource(roomImages[room.getImage()]);
+
+            roomRowLayout.setOnClickListener(view -> {
+                Intent intent = new Intent(context, RoomActivity.class);
+
+                intent.putExtra("roomData", room);
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
         }
     }
 }

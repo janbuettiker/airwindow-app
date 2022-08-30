@@ -66,4 +66,14 @@
         app:layout_constraintEnd_toEndOf="@+id/btHomeAddRoom"
         app:layout_constraintTop_toBottomOf="@+id/btHomeAddRoom" />
 
+    <Button
+        android:id="@+id/btSchedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="openScheduleActivity"
+        android:text="@string/home_schedule_button"
+        app:layout_constraintEnd_toEndOf="@+id/btHomeEdit"
+        app:layout_constraintTop_toBottomOf="@+id/btHomeEdit" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

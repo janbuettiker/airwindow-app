@@ -3,9 +3,13 @@ package com.example.airwindow_app.api;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.example.airwindow_app.models.Room;
 import com.example.airwindow_app.models.Window;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -14,6 +18,8 @@ import retrofit2.Response;
 public class WindowRepository {
 
     private static WindowRepository instance = null;
+
+    private ArrayList<Window> windows;
 
     public static synchronized WindowRepository getInstance() {
         if (instance == null) {
@@ -30,6 +36,8 @@ public class WindowRepository {
          */
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        windows = new ArrayList<>();
     }
 
     /*
@@ -57,7 +65,7 @@ public class WindowRepository {
                 .enqueue(new Callback<Window>() {
                     @Override
                     public void onResponse(Call<Window> call, Response<Window> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse putWindow", "Successfully PUT window " + response.message());
                         } else {
                             Log.e("onResponse putWindow", "Failed to PUT window " + response.code());
@@ -69,6 +77,34 @@ public class WindowRepository {
                         Log.e("onFailure putWindow", "Failed to PUT window " + t.getMessage());
                     }
                 });
+    }
+
+    public ArrayList<Window> getWindowsByRoomId(Long roomId) {
+        windows.clear();
+
+        Call<List<Window>> call = ApiClient.getInstance().getApiClient().getAllWindows(roomId);
+        call.enqueue(new Callback<List<Window>>() {
+            @Override
+            public void onResponse(Call<List<Window>> call, Response<List<Window>> response) {
+                if (Integer.toString(response.code()).startsWith("2")) {
+                    Log.i("onResponse getWindowsByRoomId", "Successfully GOT windows " + response.message());
+
+                    List<Window> windowList = response.body();
+                    for (int i = 0; i < windowList.size(); i++) {
+                        windows.add(windowList.get(i));
+                    }
+                } else {
+                    Log.e("onResponse getWindowsByRoomId", "Failed to GET windows " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Window>> call, Throwable t) {
+                Log.e("onFailure getWindowsByRoomId", "Failed to GET windows " + t.getMessage());
+            }
+        });
+
+        return windows;
     }
 
     public void deleteWindow(Long roomId, Window w) {
@@ -91,7 +127,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse patchWindowState", "Successfully updated state " + response.message());
                         } else {
                             Log.e("onResponse patchWindowState", "Failed to PATCH window state " + response.code());
@@ -112,7 +148,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse postScheduledTask", "Successfully scheduled task " + response.message());
 
                         } else {
@@ -135,7 +171,7 @@ public class WindowRepository {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.code() == 200) {
+                        if (Integer.toString(response.code()).startsWith("2")) {
                             Log.i("onResponse postOneTimeTask", "Successfully scheduled one time task " + response.message());
 
                         } else {

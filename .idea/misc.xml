@@ -6,12 +6,13 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.36582539876302095" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4930224609375" />
         <entry key="app/src/main/res/layout/activity_room.xml" value="0.3046875" />
+        <entry key="app/src/main/res/layout/activity_schedule.xml" value="0.36829268292682926" />
         <entry key="app/src/main/res/layout/activity_window.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_window_overview.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/layout/edit_dialog.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/room_view_row.xml" value="0.5268571428571428" />
         <entry key="app/src/main/res/layout/window_edit_dialog.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/window_view_row.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/window_view_row.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.308" />
       </map>
     </option>

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     RoomRepository roomRepository;
 
     RecyclerView recyclerView;
+    RoomAdapter adapter;
 
     TextView homeNameTV;
     TextView homeDescriptionTV;
@@ -44,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     Long homeId;
     Home homeData;
 
-    ArrayList<Room> rooms;
+    ArrayList<Room> rooms = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +62,10 @@ public class HomeActivity extends AppCompatActivity {
         homeNameTV = findViewById(R.id.tvHomeName);
         homeDescriptionTV = findViewById(R.id.tvHomeDescription);
 
-        rooms = new ArrayList<>();
-        recyclerView = findViewById(R.id.rvHomeRoomList);
+        this.recyclerView = findViewById(R.id.rvHomeRoomList);
+        adapter = new RoomAdapter(this, rooms);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
     }
 
@@ -83,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<Home>() {
             @Override
             public void onResponse(Call<Home> call, Response<Home> response) {
-                if (response.code() == 200) {
+                if (Integer.toString(response.code()).startsWith("2")) {
                     Log.i("onResponse getHomeData", "Successfully GOT homes " + response.message());
 
                     homeData = response.body();
@@ -110,18 +114,11 @@ public class HomeActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Room>>() {
             @Override
             public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
-                if (response.code() == 200) {
+                if (Integer.toString(response.code()).startsWith("2")) {
                     Log.i("onResponse getRoomsByHomeId", "Successfully GOT rooms " + response.message());
+                    rooms.addAll(response.body());
+                    adapter.setRoomData(rooms);
 
-                    List<Room> roomList = response.body();
-                    for (int i = 0; i < roomList.size(); i++) {
-                        rooms.add(roomList.get(i));
-
-                        RoomAdapter roomAdapter = new RoomAdapter(getApplicationContext(), rooms);
-                        recyclerView.setAdapter(roomAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                    }
                 } else {
                     Log.e("onResponse getRoomsByHomeId", "Failed to GET rooms " + response.code());
                 }
@@ -217,6 +214,12 @@ public class HomeActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void openScheduleActivity(View view) {
+        Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent);
     }
 
     public void putHome() {
