@@ -1,6 +1,8 @@
 package com.example.airwindow_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -14,12 +16,24 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.airwindow_app.R;
+import com.example.airwindow_app.adapters.WindowMultiAdapter;
+import com.example.airwindow_app.api.ApiClient;
+import com.example.airwindow_app.api.RoomRepository;
 import com.example.airwindow_app.api.WindowRepository;
+import com.example.airwindow_app.models.Room;
+import com.example.airwindow_app.models.Window;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScheduleActivity extends AppCompatActivity {
 
+    RoomRepository roomRepository;
     WindowRepository windowRepository;
 
     Integer timePickerHour, timePickerMinute;
@@ -29,11 +43,16 @@ public class ScheduleActivity extends AppCompatActivity {
     EditText scheduleLaterMinuteETN;
     ToggleButton scheduleLaterStateTB;
 
+    RecyclerView recyclerView;
+    WindowMultiAdapter adapter;
+    ArrayList<Window> windows = new ArrayList<Window>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        roomRepository = RoomRepository.getInstance();
         windowRepository = WindowRepository.getInstance();
 
         scheduleDailyTimePickerBT = findViewById(R.id.btScheduleDailyTimePicker);
@@ -41,6 +60,19 @@ public class ScheduleActivity extends AppCompatActivity {
 
         scheduleLaterMinuteETN = findViewById(R.id.etnScheduleLater);
         scheduleLaterStateTB = findViewById(R.id.tbScheduleLaterState);
+
+        this.recyclerView = findViewById(R.id.rvWindowMultiSelect);
+        adapter = new WindowMultiAdapter(this, windows);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setWindowData();
     }
 
     public void populateTimePicker(View view) {
@@ -82,8 +114,9 @@ public class ScheduleActivity extends AppCompatActivity {
             stateValue = "CLOSED";
         }
 
-        //TODO: For Each for each selected item
-        //windowRepository.postScheduledTask(windowData, hour, minute, stateValue);
+        for (Window w: adapter.getSelected()) {
+            windowRepository.postScheduledTask(w, hour, minute, stateValue);
+        }
         Toast.makeText(getApplicationContext(), getString(R.string.window_toast_scheduledtask_text), Toast.LENGTH_LONG).show();
 
     }
@@ -107,11 +140,48 @@ public class ScheduleActivity extends AppCompatActivity {
             stateValue = "CLOSED";
         }
 
-        //TODO: For Each for each selected item
-        //windowRepository.postOneTimeTask(windowData, minute, stateValue);
+        for (Window w: adapter.getSelected()) {
+            windowRepository.postOneTimeTask(w, minute, stateValue);
+        }
         Toast.makeText(getApplicationContext(), getString(R.string.window_toast_onetimetask_text), Toast.LENGTH_LONG).show();
 
 
+    }
+
+    private void setWindowData() {
+        windows.clear();
+
+        Call<List<Room>> roomCall = ApiClient.getInstance().getApiClient().getAllRooms(Long.valueOf(1));
+        roomCall.enqueue(new Callback<List<Room>>() {
+            @Override
+            public void onResponse(Call<List<Room>> call, Response<List<Room>> response) {
+                Log.i("setWindowData onResponse roomCall", "Triggered rooms length");
+                List<Room> roomList = response.body();
+
+                for (Room r : roomList) {
+                    Call<List<Window>> windowCall = ApiClient.getInstance().getApiClient().getAllWindows(r.getId());
+                    windowCall.enqueue(new Callback<List<Window>>() {
+                        @Override
+                        public void onResponse(Call<List<Window>> call, Response<List<Window>> response) {
+                            Log.i("setWindowData onResponse windowCall", "Triggered");
+                            windows.addAll(response.body());
+                            adapter.setWindowData(windows);
+                            Log.e("setWindowData onResponse windowCall", "windows length: " + windows.size());
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Window>> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Room>> call, Throwable t) {
+
+            }
+        });
     }
 
 

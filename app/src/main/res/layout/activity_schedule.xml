@@ -11,10 +11,11 @@
         android:id="@+id/tvScheduleDaily"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:text="@string/window_scheduled_task_text"
-        app:layout_constraintStart_toStartOf="@+id/rvWindowMultiSelect"
-        app:layout_constraintTop_toBottomOf="@+id/rvWindowMultiSelect" />
+        app:layout_constraintStart_toStartOf="@+id/ivScheduleIcon"
+        app:layout_constraintTop_toBottomOf="@+id/ivScheduleIcon" />
 
     <Button
         android:id="@+id/btScheduleDailyTimePicker"
@@ -121,11 +122,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWindowMultiSelect"
         android:layout_width="359dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivScheduleIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/btScheduleLater" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

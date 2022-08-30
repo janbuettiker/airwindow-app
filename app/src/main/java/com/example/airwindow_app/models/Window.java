@@ -28,6 +28,9 @@ public class Window implements Parcelable {
     @SerializedName("weatherAware")
     @Expose
     private String weatherAware;
+    // Used for multi select recycler view, so no need to import or export to backend
+    @Expose(serialize = false, deserialize = false)
+    private boolean isChecked;
 
     public String getCurrentState() {
         return currentState;
@@ -73,10 +76,14 @@ public class Window implements Parcelable {
 
     public void setWeatherAware(String weatherAware) { this.weatherAware = weatherAware; }
 
+    public boolean isChecked() {return isChecked; }
+
+    public void setChecked(boolean checked) {isChecked = checked; }
+
     /*
-            Parcelable implementation to be able to send the whole object
-            through an intent for easier data exchange between activites.
-         */
+                    Parcelable implementation to be able to send the whole object
+                    through an intent for easier data exchange between activites.
+                 */
     @Override
     public int describeContents() {
         return 0;
