@@ -220,6 +220,8 @@ Either clone the repository and run the project through Android studio or simply
 When starting up the app, you will be greeted by the home overview screen. Everything else from there is self explanatory.
 Or else - Reference to the <a href="#about-the-project">About page</a>.
 
+APK: https://github.com/janbuettiker/airwindow-app/blob/main/airwindow-app.apk
+
 ### API Disclaimer
 
 As the API is open and someone else might be using the API as well, there is no guarantee for the data that can be found here.
