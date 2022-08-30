@@ -31,7 +31,6 @@ public class WindowMultiAdapter extends RecyclerView.Adapter<WindowMultiAdapter.
     }
 
     public void setWindowData(ArrayList<Window> windows) {
-        this.windowData = new ArrayList<>();
         this.windowData = windows;
         notifyDataSetChanged();
     }

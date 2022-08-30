@@ -45,7 +45,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     WindowMultiAdapter adapter;
-    ArrayList<Window> windows = new ArrayList<Window>();
+    ArrayList<Window> windows = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +151,16 @@ public class ScheduleActivity extends AppCompatActivity {
     private void setWindowData() {
         windows.clear();
 
+        /*
+            Protect your eyes!
+            Spaghetti ahead, because my backend was built in a way, that you cannot just
+            GET all windows, no matter the room, we need to do some nice italian pasta:
+            - Get ALL Rooms from the home
+            - For each Room
+                - Get ALL Windows
+                - And in the callback, update the recyclerview adapter with new data
+            So you end up with encapsulated callbacks.. nice!
+         */
         Call<List<Room>> roomCall = ApiClient.getInstance().getApiClient().getAllRooms(Long.valueOf(1));
         roomCall.enqueue(new Callback<List<Room>>() {
             @Override

@@ -32,6 +32,11 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
         imageData = images;
     }
 
+    public void setWindowData(ArrayList<Window> windows) {
+        this.windowData = windows;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public WindowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,24 +47,7 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
 
     @Override
     public void onBindViewHolder(@NonNull WindowViewHolder holder, final int position) {
-
-        // Sets the view items to positional values in the data arrays
-        holder.nameTV.setText(windowData.get(position).getName());
-        holder.descriptionTV.setText(windowData.get(position).getDescription());
-        holder.iconIV.setImageResource(imageData[0]);
-
-        holder.windowRowLayout.setOnClickListener(view -> {
-            Intent intent = new Intent(context, WindowActivity.class);
-
-            // Send data to Window Activity, omit imagedata as we do not care for the moment
-            intent.putExtra("windowData", windowData.get(position));
-            intent.putExtra("roomId", roomId);
-
-            // Needed because we create the recyclerview outside of onCreate()
-            // Thus, the Adapter is not properly attached
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        });
+            holder.bind(windowData.get(position), position);
     }
 
     @Override
@@ -79,6 +67,25 @@ public class WindowAdapter extends RecyclerView.Adapter<WindowAdapter.WindowView
             descriptionTV = windowItemView.findViewById(R.id.tvWindowOverviewDescription);
             iconIV = windowItemView.findViewById(R.id.ivWindowOverviewIcon);
             windowRowLayout = windowItemView.findViewById(R.id.windowRowLayout);
+        }
+
+        void bind(final Window window, final int position) {
+            nameTV.setText(window.getName());
+            descriptionTV.setText(window.getDescription());
+            iconIV.setImageResource(imageData[0]);
+
+            windowRowLayout.setOnClickListener(view -> {
+                Intent intent = new Intent(context, WindowActivity.class);
+
+                // Send data to Window Activity, omit imagedata as we do not care for the moment
+                intent.putExtra("windowData", window);
+                intent.putExtra("roomId", roomId);
+
+                // Needed because we create the recyclerview outside of onCreate()
+                // Thus, the Adapter is not properly attached
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            });
         }
     }
 }
